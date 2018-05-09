@@ -1,0 +1,24 @@
+version: '2'
+
+services:
+  kafka:
+    image: spotify/kafkaproxy
+    ports:
+      - "9092:9092"
+      - "2181:2181"
+    hostname: kafka
+    expose:
+      - "9092"
+      - "2181"
+    environment:
+      TOPICS: test-topic
+  front-api:
+    build: .
+    volumes:
+      - .:/code:cached
+    command: yarn server:watch
+    environment:
+      - NODE_ENV=development
+    ports:
+      - '3000:3000'
+
