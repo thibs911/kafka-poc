@@ -1,0 +1,10 @@
+{
+  "generator-react-loopback": {
+    "applicationName": "osef",
+    "applicationFolder": "osef",
+    "clientRequired": true,
+    "clientLanguage": "es6",
+    "serverRequired": true,
+    "serverPort": 3000
+  }
+}
