@@ -25,17 +25,16 @@ module.exports = function (app) {
         var producer = new HighLevelProducer(client);
 
         producer.on('ready', function () {
-            var payloadTemp = [
+            var payload = [
              {   
-                topic: 'topic',
-                messages: ['test 1234'],
+                topic: 'ultimate',
+                messages: ['Example pour So'],
                 attributes: 1,
              }
             ];
 
             //Send payload to Kafka and log result/error
-            console.log(payloadTemp);
-            producer.send(payloadTemp, function (error, result) {
+            producer.send(payload, function (error, result) {
                 console.info('Sent payload to Kafka: ', payload);
                 if (error) {
                     console.error(error);
@@ -52,30 +51,4 @@ module.exports = function (app) {
             console.error(error);
         });
     });
-
-    app.get('/api/get', (req, res) => {
-        var HighLevelConsumer = kafka.HighLevelConsumer;
-        var Client = kafka.Client;
-        var client = new Client('kafka:2181', 'consumer');
-        var topics = [{
-            topic: 'topic'
-        }];
-        var options = { autoCommit: true, fetchMaxWaitMs: 1000, fetchMaxBytes: 1024 * 1024 };
-        var consumer = new HighLevelConsumer(client, topics);
-
-        consumer.on('message', function (message) {
-            console.log(message);
-        });
-
-        consumer.on('error', function (err) {
-            console.log('error', err);
-        });
-
-        process.on('SIGINT', function () {
-            consumer.close(true, function () {
-                process.exit();
-            });
-        });
-
-    });
-}
+};
