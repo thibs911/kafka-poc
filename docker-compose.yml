@@ -21,4 +21,25 @@ services:
       - NODE_ENV=development
     ports:
       - '3000:3000'
+  slack-service:
+    build: slack-api/
+    volumes:
+      - .:/code:cached
+    command: node slack-api/slack-service.js
+    environment:
+      - SLACK_TOKEN=xoxp-361274991058-361413356933-360733752961-3174f99b67038c9ae43c9db884afff94
+    depends_on:
+      - kafka
+  mail-service:
+    build: mail-service/
+    volumes:
+      - .:/code:cached
+    command: node mail-service/mail-service.js
+    depends_on:
+      - kafka
+  mail-dev:
+    image: djfarrelly/maildev
+    ports:
+      - '1080:80'
+      - '1025:25'
 
