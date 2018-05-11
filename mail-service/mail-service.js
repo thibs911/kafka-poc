@@ -4,11 +4,11 @@ const kafka = require('kafka-node');
 const nodemailer = require('nodemailer');
 
 const ConsumerGroup = kafka.ConsumerGroup;
-const topics = 'ultimate';
+const topics = 'message';
 const options = {
     host: 'kafka:2181',  // zookeeper host omit if connecting directly to broker (see kafkaHost below)
     groupId: 'consumer-1',
-    id: 'osef1',
+    id: 'consumer-1',
     sessionTimeout: 15000,
     // An array of partition assignment protocols ordered by preference.
     // 'roundrobin' or 'range' string for built ins (see below to pass in custom assignment protocol)
@@ -36,7 +36,6 @@ let mailOptions = {
 consumer.on('message', function (message) {
     console.log(message);
     const mail = Object.assign(mailOptions, { text: message.value });
-    console.log(mail);
     transporter.sendMail(mail, (err, info) => {
         if (err) {
             return console.log(err);

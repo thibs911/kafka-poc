@@ -13,7 +13,6 @@ app.use(function(req, res, next) {
   next();
 });
 app.post('/api/messages', (req, res) => {
-  console.log(req);
 
   const HighLevelProducer = kafka.HighLevelProducer;
   const Client = kafka.Client;
@@ -31,7 +30,7 @@ app.post('/api/messages', (req, res) => {
   producer.on('ready', () => {
     const payload = [
       {
-        topic: 'ultimate',
+        topic: 'message',
         messages: [req.body.message],
         attributes: 1
       }

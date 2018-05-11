@@ -6,11 +6,11 @@ const web = new WebClient(token);
 const conversationId = "test";
 
 const ConsumerGroup = kafka.ConsumerGroup;
-const topics = 'ultimate';
+const topics = 'message';
 const options = {
     host: 'kafka:2181',  // zookeeper host omit if connecting directly to broker (see kafkaHost below)
     groupId: 'consumer-2',
-    id: 'osef2',
+    id: 'consumer-2',
     sessionTimeout: 15000,
     // An array of partition assignment protocols ordered by preference.
     // 'roundrobin' or 'range' string for built ins (see below to pass in custom assignment protocol)

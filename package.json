@@ -20,7 +20,8 @@
     "server:watch": "nodemon --inspect server/server.js --ignore client/",
     "server:test": "mocha --compilers js:babel-core/register 'server/**/{*,}test.js'",
     "server:test:coverage": "nyc node_modules/.bin/babel-istanbul cover node_modules/.bin/_mocha -- 'server/**/{*,}test.js'",
-    "server:lint": "eslint -c server/.eslintrc server"
+    "server:lint": "eslint -c server/.eslintrc server",
+    "kafka:topic": "docker exec -it $(docker ps -q -f name=kafka_1) kafka_2.8.0-0.8.1/bin/kafka-topics.sh --create --topic message --zookeeper kafka:2181 --replication-factor 1 --partitions 20"
   },
   "dependencies": {
     "@slack/client": "^4.2.0",
