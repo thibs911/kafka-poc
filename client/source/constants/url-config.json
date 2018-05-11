@@ -1,0 +1,5 @@
+{
+  "AUTH":"api/auth",
+  "AUTH_LOGOUT": "logout",
+  "MESSAGE": "http://localhost/kafka-poc/api/messages"
+}

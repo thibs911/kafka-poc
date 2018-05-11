@@ -1,0 +1,65 @@
+version: '2'
+
+services:
+
+  nginx:
+    image: nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    environment:
+      - NODE_ENV=development
+    ports:
+      - 80:80
+    depends_on:
+      - front-api
+      - front-client
+  front-client:
+    build: .
+    volumes:
+      - .:/code:cached
+    command: yarn client:watch -- --host 0.0.0.0 --port 8080
+    environment:
+      - NODE_ENV=development
+    ports:
+      - 8080:8080
+      - 35729:35729
+  kafka:
+    image: spotify/kafkaproxy
+    ports:
+      - "9092:9092"
+      - "2181:2181"
+    hostname: kafka
+    expose:
+      - "9092"
+      - "2181"
+  front-api:
+    build: .
+    volumes:
+      - .:/code:cached
+    command: yarn server:watch
+    environment:
+      - NODE_ENV=development
+    ports:
+      - '3000:3000'
+  slack-service:
+    build: slack-api/
+    volumes:
+      - .:/code:cached
+    command: node slack-api/slack-service.js
+    environment:
+      - SLACK_TOKEN=xoxp-361274991058-361413356933-360733752961-3174f99b67038c9ae43c9db884afff94
+    depends_on:
+      - kafka
+  mail-service:
+    build: mail-service/
+    volumes:
+      - .:/code:cached
+    command: node mail-service/mail-service.js
+    depends_on:
+      - kafka
+  mail-dev:
+    image: djfarrelly/maildev
+    ports:
+      - '1080:80'
+      - '1025:25'
+

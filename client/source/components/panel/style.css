@@ -1,0 +1,14 @@
+.panelWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.rowWrapper {
+  display: flex;
+  flex: 1;
+}
+
+.cancel {
+  display: flex;
+  flex-direction: row-reverse;
+}
