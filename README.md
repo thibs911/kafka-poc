@@ -43,6 +43,29 @@ I can add as many person as you wish
 
 MailDev can be accessed at this address : http://localhost:1080
 
+### Kafka
+
+You may have to restart kafka service when you lauching your first docker-compose up. I will have to investigate, but my guess is that Zookeeper in not instantiate when the 2 consumers are trying to connect. 
+So, if you see message a like the following :  
+```
+ error { NO_NODE: Exception: NO_NODE[-101]
+slack-service_1  |     at ConnectionManager.onSocketData (/code/node_modules/node-zookeeper-client/lib/ConnectionManager.js:570:35)
+slack-service_1  |     at Socket.emit (events.js:180:13)
+slack-service_1  |     at addChunk (_stream_readable.js:274:12)
+slack-service_1  |     at readableAddChunk (_stream_readable.js:261:11)
+slack-service_1  |     at Socket.Readable.push (_stream_readable.js:218:10)
+slack-service_1  |     at TCP.onread (net.js:581:20)
+slack-service_1  |   code: -101,
+slack-service_1  |   name: 'NO_NODE',
+slack-service_1  |   path: undefined,
+slack-service_1  |   message: 'Exception: NO_NODE[-101]' }
+
+```
+It would be preferably to restart kafka
+```
+docker-compose restart kafka
+```
+
 ### Testing the app
 
 Once you have made a valid compute ( 1 + 1 = 2 for example)
