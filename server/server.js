@@ -7,9 +7,9 @@ const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ type: 'application/json' }));
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   next();
 });
 app.post('/api/messages', (req, res) => {
@@ -59,6 +59,6 @@ app.post('/api/messages', (req, res) => {
 });
 
 
-app.listen(3000, function() {
-  console.log('listening on 3000')
-})
+app.listen(3000, () => { // eslint-disable-line
+  console.log('listening on 3000'); // eslint-disable-line
+});
