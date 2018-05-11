@@ -32,7 +32,7 @@ const middlePanel = [
   '+',
 ];
 
-class Panel extends Component {
+export class Panel extends Component {
   onClick = item => () => {
     const newStack = this.props.stack;
     newStack.push(item);

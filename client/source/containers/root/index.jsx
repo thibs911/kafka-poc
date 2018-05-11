@@ -9,7 +9,7 @@ import fr from 'react-intl/locale-data/fr';
 import en from 'react-intl/locale-data/en';
 
 import HeaderBar from '../../components/header-bar';
-import Calculator from '../calculator';
+import Calculator from '../calculator'; // eslint-disable-line
 import frMessages from '../../locale/locale-fr.json';
 import enMessages from '../../locale/locale-en.json';
 import { updateStack, toggleRandomMode } from '../../actions/calculator';

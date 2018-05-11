@@ -2,12 +2,12 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import commonStyle from '../style.css';
 
-export default class Result extends PureComponent {
+export class Result extends PureComponent {
   render() {
     const { result } = this.props;
     return (
       <div className={commonStyle.minHeight}>
-        {result === null ? 'ERROR' : result}
+        {result === null || isNaN(result) ? 'ERROR' : result}
       </div>
     );
   }
@@ -16,3 +16,5 @@ export default class Result extends PureComponent {
 Result.propTypes = {
   result: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
+
+export default Result;

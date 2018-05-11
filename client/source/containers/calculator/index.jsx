@@ -3,15 +3,15 @@ import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import Card from '../../components/card';
-import Operation from '../../components/operation';
-import Result from '../../components/result';
-import Panel from '../../components/panel';
+import { Operation } from '../../components/operation';
+import { Result } from '../../components/result';
+import { Panel } from '../../components/panel';
 
 import { updateStack, clearCalculator } from '../../actions/calculator';
 import { sendMessage } from '../../effects/calculator';
 import styles from './style.css';
 
-class Calculator extends Component {
+export class Calculator extends Component {
   render() {
     const { calculator: { stack = [], result } } = this.props;
     return (
