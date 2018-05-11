@@ -32,8 +32,6 @@ services:
     expose:
       - "9092"
       - "2181"
-    environment:
-      TOPICS: test-topic
   front-api:
     build: .
     volumes:
