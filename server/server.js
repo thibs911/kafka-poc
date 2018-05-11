@@ -1,31 +1,65 @@
 'use strict';
+const express = require('express');
+const kafka = require('kafka-node');
+const bodyParser = require('body-parser');
 
-const loopback = require('loopback');
-const boot = require('loopback-boot');
-const logger = require('./services/winston-config')();
+const app = express();
 
-const app = module.exports = loopback();
-
-app.start = function () {
-  // start the web server
-  return app.listen(() => {
-    app.emit('started');
-    const baseUrl = app.get('url').replace(/\/$/, '');
-    logger.log('Web server listening at: %s', baseUrl);
-    if (app.get('loopback-component-explorer')) {
-      const explorerPath = app.get('loopback-component-explorer').mountPath;
-      logger.log('Browse your REST API at %s%s', baseUrl, explorerPath);
-    }
-  });
-};
-
-// Bootstrap the application, configure models, datasources and middleware.
-// Sub-apps like REST API are mounted via boot scripts.
-boot(app, __dirname, (err) => {
-  if (err) {throw err;}
-
-  // start the server if `$ node server.js`
-  if (require.main === module) {
-    app.start();
-  }
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ type: 'application/json' }));
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
 });
+app.post('/api/messages', (req, res) => {
+  console.log(req);
+
+  const HighLevelProducer = kafka.HighLevelProducer;
+  const Client = kafka.Client;
+  const client = new Client('kafka:2181', 'my-client-id', {
+    sessionTimeout: 300,
+    spinDelay: 100,
+    retries: 0
+  });
+  // For this demo we just log client errors to the console.
+  client.on('error', (error) => {
+    console.error(error); // eslint-disable-line
+  });
+  const producer = new HighLevelProducer(client);
+
+  producer.on('ready', () => {
+    const payload = [
+      {
+        topic: 'ultimate',
+        messages: [req.body.message],
+        attributes: 1
+      }
+    ];
+
+    //Send payload to Kafka and log result/error
+    producer.send(payload, (error, result) => {
+      console.info('Sent payload to Kafka: ', payload); // eslint-disable-line
+      if (error) {
+        console.error(error); // eslint-disable-line
+        res.status(500);  // eslint-disable-line
+        res.send({ message: 'Oups, something went wrong'});
+
+      } else {
+        console.log('result: ', result) // eslint-disable-line
+        client.close();
+        res.send({ message: 'Send To Kafka' });
+      }
+    });
+  });
+
+  // For this demo we just log producer errors to the console.
+  producer.on('error', (error) => {
+    console.error(error); // eslint-disable-line
+  });
+});
+
+
+app.listen(3000, function() {
+  console.log('listening on 3000')
+})
